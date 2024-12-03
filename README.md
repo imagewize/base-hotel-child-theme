@@ -18,3 +18,11 @@ A child theme for the Base Hotel WordPress theme, providing additional functiona
 - Version: 1.0.0
 - Parent Theme: Base Hotel
 - Author: Imagewize (https://imagewize.com)
+
+## Multisite Setup
+
+To use this child theme in a WordPress Multisite environment:
+
+1. Ensure the parent theme (`Base Hotel`) is installed and network-enabled.
+2. Install and network-enable the child theme (`Base Hotel Child Theme`).
+3. Activate the child theme on the desired site via `Network Admin` > `Sites` > `Edit` > `Themes`.
