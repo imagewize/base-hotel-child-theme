@@ -1,0 +1,1 @@
+# Base Hotel Child Theme
