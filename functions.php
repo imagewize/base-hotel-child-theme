@@ -98,3 +98,17 @@ function disable_emojis_tinymce( $plugins ) {
 }
 
 add_action('init', 'disable_emoji_feature');
+
+function base_hotel_child_dequeue_google_fonts() {
+    wp_dequeue_style('base_hotel_fonts');
+}
+add_action('wp_enqueue_scripts', 'base_hotel_child_dequeue_google_fonts', 20);
+
+function base_hotel_child_enqueue_local_fonts() {
+    // Enqueue local Open Sans font
+    wp_enqueue_style('base_hotel_child_open_sans', get_stylesheet_directory_uri() . '/css/open-sans.css', array(), '1.0.0');
+
+    // Enqueue local Poly font
+    wp_enqueue_style('base_hotel_child_poly', get_stylesheet_directory_uri() . '/css/poly.css', array(), '1.0.0');
+}
+add_action('wp_enqueue_scripts', 'base_hotel_child_enqueue_local_fonts');
