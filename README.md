@@ -1,6 +1,6 @@
 # Base Hotel Child Theme
 
-A child theme for the Base Hotel WordPress theme, providing additional functionality and customizations.
+A child theme for the Base Hotel WordPress theme with performance optimizations.
 
 ## Features
 
@@ -13,6 +13,25 @@ A child theme for the Base Hotel WordPress theme, providing additional functiona
   - cdn-cookieyes.com
   - directory.cookieyes.com
   - log.cookieyes.com
+
+## Performance Optimizations
+
+### Local Fonts
+- Replaced Google Fonts with local WOFF2 font files
+  - Open Sans (weights: 300, 400, 500, 600, 700)
+  - Poly (weight: 400)
+- Font files are served with font-display: swap for optimal loading
+
+### Removed Features
+- Disabled WordPress emoji support
+  - Removed emoji CSS
+  - Removed emoji JavaScript
+  - Removed emoji DNS prefetch
+  - Disabled emoji in TinyMCE editor
+
+### DNS Prefetch
+- Added DNS prefetch for external services
+  - CookieYes domains
 
 ### Technical Details
 - Version: 1.0.0
