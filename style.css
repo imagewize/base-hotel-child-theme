@@ -5,7 +5,19 @@
  Author:       Imagewize
  Author URI:   https://imagewize.com
  Template:     base-hotel
- Version:      1.0.0
+ Version:      1.0.5
 */
 
-/* Add your custom styles below */
+/* Override featured item title font to use local Poly font */
+header #featured .item .title span {
+    font-family: 'Poly', georgia;
+    font-style: italic;
+    font-weight: 400;
+    padding: 5px 17px 10px;
+    font-size: 40px;
+    line-height: 45px;
+    letter-spacing: -.5px;
+    background: rgba(255,255,255,.85);
+    box-shadow: 1px 1px 0 rgba(0,0,0,.1);
+    border-radius: 5px;
+}
