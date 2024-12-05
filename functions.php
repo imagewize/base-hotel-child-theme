@@ -17,7 +17,7 @@ function base_hotel_child_enqueue_styles() {
     wp_enqueue_style('base-hotel-child-style',
         get_stylesheet_directory_uri() . '/style.css',  // Path to child theme's style.css
         array($parent_style),  // Make child style dependent on parent style
-        $theme_version  // Use file modification time instead of theme version
+        $theme_version  // Use theme version from style.css for cache busting
     );
 }
 
