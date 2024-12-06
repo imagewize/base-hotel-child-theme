@@ -33,8 +33,19 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
 - Added DNS prefetch for external services
   - CookieYes domains
 
+### Lazy Loading
+- Enhanced native WordPress lazy loading functionality
+- Extends lazy loading support to:
+  - ACF image fields
+  - Template parts
+  - Widget areas
+  - Background images
+  - iframes
+  - Dynamically loaded content
+- Includes polyfill for older browsers
+
 ### Technical Details
-- Version: 1.0.0
+- Version: 1.0.6
 - Parent Theme: Base Hotel
 - Author: Imagewize (https://imagewize.com)
 

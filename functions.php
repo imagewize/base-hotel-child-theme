@@ -122,3 +122,111 @@ function base_hotel_child_enqueue_local_fonts() {
     );
 }
 add_action('wp_enqueue_scripts', 'base_hotel_child_enqueue_local_fonts');
+
+/**
+ * Enhances WordPress's native lazy loading functionality
+ * 
+ * WordPress core only handles lazy loading for post content images,
+ * but misses images in custom templates, ACF fields, widgets, and dynamic content.
+ * This implementation extends lazy loading to cover:
+ * - ACF image fields
+ * - Template parts
+ * - Widget areas
+ * - Background images
+ * - iframes
+ * - Dynamically loaded content
+ * 
+ * @since 1.0.6
+ */
+function enhance_lazy_loading() {
+    // Run earlier for better performance
+    add_action('wp', function() {
+        // Filter main content
+        add_filter('the_content', 'add_lazy_loading', 99);
+        
+        // Filter ACF fields - both formatted and raw image fields
+        add_filter('acf_the_content', 'add_lazy_loading', 99);
+        add_filter('acf/format_value/type=image', 'add_lazy_loading_acf_image', 20, 3);
+        
+        // Filter gallery output
+        add_filter('post_gallery', 'add_lazy_loading', 99);
+        
+        // Filter widget content
+        add_filter('widget_text_content', 'add_lazy_loading', 99);
+        
+        // Filter template parts via output buffer
+        ob_start('add_lazy_loading');
+    });
+}
+
+/**
+ * Adds loading="lazy" attribute to HTML elements that support it
+ * 
+ * Processes content and adds lazy loading to:
+ * - img tags without existing loading attribute
+ * - iframe elements
+ * - elements with background-image CSS
+ * 
+ * @param string $content The content to be filtered
+ * @return string Modified content with lazy loading attributes
+ */
+function add_lazy_loading($content) {
+    if (is_admin() || is_feed() || is_preview()) {
+        return $content;
+    }
+
+    $patterns = array(
+        // Images
+        '/<img(?![^>]*loading=["\'])(.*?)src=/is' => '<img$1loading="lazy" src=',
+        // iframes
+        '/<iframe(?![^>]*loading=["\'])(.*?)src=/is' => '<iframe$1loading="lazy" src=',
+        // Background images (optional)
+        '/style="([^"]*?)background-image:\s*url\([\'"]?(.*?)[\'"]?\)([^"]*?)"/is' 
+            => 'style="$1background-image: url($2)$3" loading="lazy"'
+    );
+
+    foreach ($patterns as $pattern => $replacement) {
+        $content = preg_replace($pattern, $replacement, $content);
+    }
+
+    return $content;
+}
+
+/**
+ * Adds lazy loading support for ACF image fields
+ * 
+ * ACF image fields return arrays with image data. This function
+ * adds the loading="lazy" attribute to the image array.
+ * 
+ * @param array|mixed $value The field value
+ * @param int $post_id The post ID where the value was loaded from
+ * @param array $field The field array containing all settings
+ * @return array|mixed Modified field value with lazy loading
+ */
+function add_lazy_loading_acf_image($value, $post_id, $field) {
+    if (!is_array($value) || empty($value['url'])) {
+        return $value;
+    }
+
+    // Add loading attribute to ACF image array
+    $value['loading'] = 'lazy';
+    
+    return $value;
+}
+
+// Initialize lazy loading
+add_action('init', 'enhance_lazy_loading', 5);
+
+// Optional: Add modern lazy load fallback
+function add_lazy_load_fallback() {
+    if (!is_admin()) {
+        wp_enqueue_script(
+            'lazy-load-fallback',
+            get_stylesheet_directory_uri() . '/js/lazy-load-polyfill.js',
+            array(),
+            wp_get_theme()->get('Version'),
+            true
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'add_lazy_load_fallback');
