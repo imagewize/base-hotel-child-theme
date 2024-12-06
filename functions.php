@@ -222,7 +222,7 @@ function add_lazy_load_fallback() {
     if (!is_admin()) {
         wp_enqueue_script(
             'lazy-load-fallback',
-            get_stylesheet_directory_uri() . '/js/lazy-load-polyfill.js',
+            get_stylesheet_directory_uri() . '/js/lazy-load-fallback.js',
             array(),
             wp_get_theme()->get('Version'),
             true
