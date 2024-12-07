@@ -7,6 +7,8 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
 ### Style Enhancements
 - Properly inherits all styles from the parent Base Hotel theme
 - Allows for custom style overrides through child theme's style.css
+- Responsive slider title text sizing for mobile devices
+- Custom styling for featured item titles using local Poly font
 
 ### Performance Optimizations
 - Implements DNS prefetch and preconnect for external domains:
@@ -44,8 +46,17 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
   - Dynamically loaded content
 - Includes polyfill for older browsers
 
+### Responsive Images
+- Optimized slider background images for mobile devices
+- Automatically serves smaller (750x400) images on mobile
+- Reduces bandwidth usage and improves load times on mobile devices
+
+### Resource Optimization
+- Removed duplicate Font Awesome CSS from WP Post and Blog Designer plugin
+- Consolidated Font Awesome loading to prevent redundant requests
+
 ### Technical Details
-- Version: 1.0.6
+- Version: 1.2.3
 - Parent Theme: Base Hotel
 - Author: Imagewize (https://imagewize.com)
 
