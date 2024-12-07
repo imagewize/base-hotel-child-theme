@@ -230,3 +230,80 @@ function add_lazy_load_fallback() {
     }
 }
 add_action('wp_enqueue_scripts', 'add_lazy_load_fallback');
+
+/**
+ * Filter slider HTML to add responsive background images
+ */
+function modify_slider_background_urls($content) {
+    if (is_admin()) return $content;
+    
+    // Debug code - commented out
+    /*
+    // Force debug to screen for testing
+    echo "<!-- DEBUG START -->\n";
+    echo "<!-- Content length: " . strlen($content) . " -->\n";
+    echo "<!-- Is Mobile: " . (wp_is_mobile() ? 'yes' : 'no') . " -->\n";
+    
+    // Direct file logging
+    $log = fopen(WP_CONTENT_DIR . '/slider-debug.log', 'a');
+    fwrite($log, "\n=== " . date('Y-m-d H:i:s') . " ===\n");
+    fwrite($log, "Content length: " . strlen($content) . "\n");
+    fwrite($log, "Is Mobile: " . (wp_is_mobile() ? 'yes' : 'no') . "\n");
+    */
+    
+    $pattern = '/(<div[^>]*class="item"[^>]*style="[^"]*background-image:\s*url\([\'"]?)(.*?)([\'"]?\).*?")(.*?>)/i';
+    
+    // use ($log) removed from method below  before curly brace opening
+    $modified = preg_replace_callback($pattern, function($matches) {
+        $original_url = $matches[2];
+        /* Debug code - commented out
+        fwrite($log, "Found URL: " . $original_url . "\n");
+        echo "<!-- Found URL: " . $original_url . " -->\n";
+        */
+        
+        $base_url = preg_replace('/\.(jpg|webp)$/', '', $original_url);
+        $mobile_url = wp_is_mobile() ? 
+            $base_url . '-750x400.jpg' : 
+            $original_url;
+            
+        /* Debug code - commented out
+        fwrite($log, "Modified to: " . $mobile_url . "\n");
+        echo "<!-- Modified to: " . $mobile_url . " -->\n";
+        */
+        
+        return $matches[1] . $mobile_url . $matches[3] . $matches[4];
+    }, $content);
+    
+    /* Debug code - commented out
+    fwrite($log, "=== END ===\n");
+    fclose($log);
+    echo "<!-- DEBUG END -->\n";
+    */
+    
+    return $modified;
+}
+
+// Modify hooks to ensure we catch the content
+remove_all_filters('base_hotel_featured_content');
+add_filter('base_hotel_featured_content', 'modify_slider_background_urls', 1);
+add_filter('the_content', 'modify_slider_background_urls', 1);
+
+// Remove output buffering approach as it might interfere
+remove_action('wp_head', function() { ob_start('modify_slider_background_urls'); }, 1);
+remove_action('wp_footer', function() { ob_end_flush(); }, 99);
+
+// Add filter to more hooks to catch the slider content
+add_filter('the_content', 'modify_slider_background_urls', 20);
+add_filter('base_hotel_featured_content', 'modify_slider_background_urls', 20);
+add_filter('base_hotel_slider_html', 'modify_slider_background_urls', 20);
+
+// Add output buffer to catch all content
+add_action('wp_head', function() {
+    ob_start('modify_slider_background_urls');
+}, 1);
+add_action('wp_footer', function() {
+    ob_end_flush();
+}, 99);
+
+// Remove previous content filters if they exist
+// ...existing code...
