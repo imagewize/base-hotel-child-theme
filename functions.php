@@ -305,5 +305,11 @@ add_action('wp_footer', function() {
     ob_end_flush();
 }, 99);
 
-// Remove previous content filters if they exist
-// ...existing code...
+/**
+ * Dequeue duplicate Font Awesome CSS from WP Post and Blog Designer plugin
+ */
+function dequeue_duplicate_font_awesome() {
+    wp_dequeue_style('wpoh-fontawesome-css');
+    wp_deregister_style('wpoh-fontawesome-css');
+}
+add_action('wp_enqueue_scripts', 'dequeue_duplicate_font_awesome', 20);
