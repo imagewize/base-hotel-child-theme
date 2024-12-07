@@ -5,11 +5,12 @@
  Author:       Imagewize
  Author URI:   https://imagewize.com
  Template:     base-hotel
- Version:      1.1.4
+ Version:      1.2.3
 */
 
 /* Override featured item title font to use local Poly font */
-header #featured .item .title span {
+/* #featured > div.caroufredsel_wrapper > div > div > div */
+#featured .caroufredsel_wrapper .item .details .title span {
     font-family: 'Poly', georgia;
     font-style: italic;
     font-weight: 400;
@@ -23,10 +24,8 @@ header #featured .item .title span {
 }
 
 @media (max-width: 767px) {
-    header #featured .item .title span {
+    #featured .caroufredsel_wrapper .item .details .title span {
         font-size: 28px;
         line-height: 32px;
-        padding: 4px 12px 8px;
-        background: rgba(255,255,255,.95);
     }
 }
