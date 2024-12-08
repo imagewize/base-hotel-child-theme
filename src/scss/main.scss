@@ -28,3 +28,61 @@
         line-height: 32px;
     }
 }
+
+/* CookieYes Consent Container Performance Optimizations
+ * 1. Fixed positioning at bottom ensures visibility
+ * 2. Maintain GPU acceleration for performance
+ * 3. Ensure proper stacking context
+ */
+.cky-consent-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999999;
+    transform: none;
+    transition: transform 0.3s ease-in-out;
+    will-change: transform;
+}
+
+.cky-consent-container.loaded {
+    transform: none;
+}
+
+/* Performance optimizations for cookie consent elements:
+ * 1. contain: content - Creates new stacking context and containment boundary
+ * 2. backface-visibility: hidden - Triggers GPU acceleration
+ * 3. contain: layout style - Isolates layout/style changes to prevent whole page reflows
+ */
+
+/* Optimize paint/composite */
+.cky-consent-bar {
+    contain: content;
+    backface-visibility: hidden;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Reduce repaints for buttons */
+.cky-notice-btn-wrapper {
+    contain: layout style;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 10px;
+}
+
+@media (max-width: 767px) {
+    .cky-consent-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+    
+    .cky-consent-bar {
+        max-height: 60vh;
+    }
+}
