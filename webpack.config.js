@@ -2,7 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 module.exports = (env, argv) => {
   const isDevelopment = argv.mode === 'development';
@@ -12,7 +12,7 @@ module.exports = (env, argv) => {
       app: './src/js/app.js'
     },
     output: {
-      filename: '[name].js',
+      filename: '[name].[contenthash].js',
       path: path.resolve(__dirname, 'build'),
       clean: true
     },
@@ -35,21 +35,21 @@ module.exports = (env, argv) => {
             'css-loader',
             'sass-loader'
           ]
+        },
+        {
+          test: /\.(woff|woff2|eot|ttf|otf)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'fonts/[name].[contenthash][ext]'
+          }
         }
       ]
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: 'main.css'  // Changed from [name].css to main.css
+        filename: '[name].[contenthash].css'
       }),
-      new CopyPlugin({
-        patterns: [
-          { 
-            from: 'src/fonts', 
-            to: 'fonts'
-          }
-        ]
-      })
+      new WebpackManifestPlugin()
     ],
     optimization: {
       minimize: !isDevelopment,

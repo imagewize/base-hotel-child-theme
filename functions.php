@@ -3,13 +3,45 @@
 // Remove the BASEHOTEL_CHILD_VERSION constant definition as it's no longer needed
 
 /**
+ * Get entry from manifest file
+ */
+function get_manifest_entry($entry) {
+    $manifest_path = get_stylesheet_directory() . '/build/manifest.json';
+    
+    if (file_exists($manifest_path)) {
+        $manifest = json_decode(file_get_contents($manifest_path), true);
+        return isset($manifest[$entry]) ? $manifest[$entry] : null;
+    }
+    
+    return null;
+}
+
+/**
  * Enqueue parent and child theme styles
  * This function ensures proper loading order of stylesheets
  */
 function base_hotel_child_enqueue_styles() {
-    $script_asset = include_once get_stylesheet_directory() . '/build/app.asset.php';
-    wp_enqueue_script('custom-js', get_stylesheet_directory_uri() . '/build/app.js', $script_asset['dependencies'], $script_asset['version'], true);
-    wp_enqueue_style('custom-css', get_stylesheet_directory_uri() . '/build/main.css', array(), $script_asset['version']);
+    $js_entry = get_manifest_entry('app.js');
+    $css_entry = get_manifest_entry('app.css');
+    
+    if ($js_entry) {
+        wp_enqueue_script(
+            'custom-js',
+            get_stylesheet_directory_uri() . '/build/' . $js_entry,
+            array(),
+            null,
+            true
+        );
+    }
+    
+    if ($css_entry) {
+        wp_enqueue_style(
+            'custom-css',
+            get_stylesheet_directory_uri() . '/build/' . $css_entry,
+            array(),
+            null
+        );
+    }
 }
 
 // Hook the enqueue function into WordPress
