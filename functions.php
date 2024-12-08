@@ -311,3 +311,14 @@ function dequeue_duplicate_font_awesome() {
     wp_deregister_style('wpoh-fontawesome-css');
 }
 add_action('wp_enqueue_scripts', 'dequeue_duplicate_font_awesome', 20);
+
+/**
+ * Dequeue WordPress block library CSS since we're not using blocks
+ */
+function dequeue_block_library_css() {
+    if (!is_admin()) {
+        wp_dequeue_style('wp-block-library');
+        wp_dequeue_style('wp-block-library-theme');
+    }
+}
+add_action('wp_enqueue_scripts', 'dequeue_block_library_css', 100);
