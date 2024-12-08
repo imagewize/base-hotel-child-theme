@@ -1,24 +1,47 @@
 <?php 
 
+// Remove the BASEHOTEL_CHILD_VERSION constant definition as it's no longer needed
+
+/**
+ * Get entry from manifest file
+ */
+function get_manifest_entry($entry) {
+    $manifest_path = get_stylesheet_directory() . '/public/manifest.json';
+    
+    if (file_exists($manifest_path)) {
+        $manifest = json_decode(file_get_contents($manifest_path), true);
+        return isset($manifest[$entry]) ? $manifest[$entry] : null;
+    }
+    
+    return null;
+}
+
 /**
  * Enqueue parent and child theme styles
  * This function ensures proper loading order of stylesheets
  */
 function base_hotel_child_enqueue_styles() {
-    $parent_style = 'base-hotel-style';
-    $theme_version = wp_get_theme()->get('Version'); // Get version from style.css
+    $js_entry = get_manifest_entry('app.js');
+    $css_entry = get_manifest_entry('app.css');
     
-    // Enqueue parent theme's stylesheet first
-    wp_enqueue_style($parent_style, 
-        get_template_directory_uri() . '/style.css'  // Path to parent theme's style.css
-    );
+    if ($js_entry) {
+        wp_enqueue_script(
+            'custom-js',
+            get_stylesheet_directory_uri() . '/public/' . $js_entry,
+            array(),
+            null,
+            true
+        );
+    }
     
-    // Enqueue child theme's stylesheet with parent dependency and file modified time
-    wp_enqueue_style('base-hotel-child-style',
-        get_stylesheet_directory_uri() . '/style.css',  // Path to child theme's style.css
-        array($parent_style),  // Make child style dependent on parent style
-        $theme_version  // Use theme version from style.css for cache busting
-    );
+    if ($css_entry) {
+        wp_enqueue_style(
+            'custom-css',
+            get_stylesheet_directory_uri() . '/public/' . $css_entry,
+            array(),
+            null
+        );
+    }
 }
 
 // Hook the enqueue function into WordPress
@@ -103,25 +126,6 @@ function base_hotel_child_dequeue_google_fonts() {
     wp_dequeue_style('base_hotel_fonts');
 }
 add_action('wp_enqueue_scripts', 'base_hotel_child_dequeue_google_fonts', 20);
-
-function base_hotel_child_enqueue_local_fonts() {
-    $theme_version = wp_get_theme()->get('Version'); // Get version from style.css
-    
-    // Enqueue local Open Sans font with theme version
-    wp_enqueue_style('base_hotel_child_open_sans', 
-        get_stylesheet_directory_uri() . '/css/open-sans.css', 
-        array(), 
-        $theme_version
-    );
-
-    // Enqueue local Poly font with theme version
-    wp_enqueue_style('base_hotel_child_poly', 
-        get_stylesheet_directory_uri() . '/css/poly.css', 
-        array(), 
-        $theme_version
-    );
-}
-add_action('wp_enqueue_scripts', 'base_hotel_child_enqueue_local_fonts');
 
 /**
  * Enhances WordPress's native lazy loading functionality

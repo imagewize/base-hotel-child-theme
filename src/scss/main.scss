@@ -1,0 +1,30 @@
+/**
+ * The main scss file for this theme.
+ * @link https://sass-lang.com/
+ */
+
+@use 'variables' as *;
+@use 'poly';
+@use 'open-sans';
+
+/* Override featured item title font to use local Poly font */
+/* #featured > div.caroufredsel_wrapper > div > div > div */
+#featured .caroufredsel_wrapper .item .details .title span {
+    font-family: 'Poly', georgia;
+    font-style: italic;
+    font-weight: 400;
+    padding: 5px 17px 10px;
+    font-size: 40px;
+    line-height: 45px;
+    letter-spacing: -.5px;
+    background: rgba(255,255,255,.85);
+    box-shadow: 1px 1px 0 rgba(0,0,0,.1);
+    border-radius: 5px;
+}
+
+@media (max-width: 767px) {
+    #featured .caroufredsel_wrapper .item .details .title span {
+        font-size: 28px;
+        line-height: 32px;
+    }
+}
