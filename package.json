@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
-    "clean": "rm -rf build/*"
+    "clean": "rm -rf public/*"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
