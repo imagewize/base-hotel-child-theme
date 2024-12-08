@@ -6,7 +6,7 @@
  * Get entry from manifest file
  */
 function get_manifest_entry($entry) {
-    $manifest_path = get_stylesheet_directory() . '/build/manifest.json';
+    $manifest_path = get_stylesheet_directory() . '/public/manifest.json';
     
     if (file_exists($manifest_path)) {
         $manifest = json_decode(file_get_contents($manifest_path), true);
@@ -27,7 +27,7 @@ function base_hotel_child_enqueue_styles() {
     if ($js_entry) {
         wp_enqueue_script(
             'custom-js',
-            get_stylesheet_directory_uri() . '/build/' . $js_entry,
+            get_stylesheet_directory_uri() . '/public/' . $js_entry,
             array(),
             null,
             true
@@ -37,7 +37,7 @@ function base_hotel_child_enqueue_styles() {
     if ($css_entry) {
         wp_enqueue_style(
             'custom-css',
-            get_stylesheet_directory_uri() . '/build/' . $css_entry,
+            get_stylesheet_directory_uri() . '/public/' . $css_entry,
             array(),
             null
         );

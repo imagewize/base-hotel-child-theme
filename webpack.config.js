@@ -13,7 +13,7 @@ module.exports = (env, argv) => {
     },
     output: {
       filename: '[name].[contenthash].js',
-      path: path.resolve(__dirname, 'build'),
+      path: path.resolve(__dirname, 'public'),
       clean: true
     },
     module: {
@@ -49,7 +49,9 @@ module.exports = (env, argv) => {
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash].css'
       }),
-      new WebpackManifestPlugin()
+      new WebpackManifestPlugin({
+        publicPath: ''  // This removes the 'auto/' prefix
+      })
     ],
     optimization: {
       minimize: !isDevelopment,
