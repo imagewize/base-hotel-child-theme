@@ -1,9 +1,8 @@
 /**
  * The main scss file for this theme.
- * Sass is a css superset that offers a way to write styles with more enhanced CSS syntax.
- * Add your custom styles here
  * @link https://sass-lang.com/
  */
 
-@import 'poly';
-@import 'open-sans';
+@use 'variables' as *;
+@use 'poly';
+@use 'open-sans';

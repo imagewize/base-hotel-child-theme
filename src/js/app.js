@@ -10,6 +10,9 @@
  */
 import { initLazyLoadFallback } from './lazy-load-fallback';
 
+// Import styles
+import '../scss/main.scss';
+
 // Initialize lazy load fallback
 initLazyLoadFallback();
 

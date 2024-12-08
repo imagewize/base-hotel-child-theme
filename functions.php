@@ -1,9 +1,6 @@
 <?php 
 
-if ( ! defined( 'BASEHOTEL_CHILD_VERSION' ) ) {
-	// Replace the version number of the theme on each release.
-	define( 'BASEHOTEL_CHILD_VERSION', '1.0.0' );
-}
+// Remove the BASEHOTEL_CHILD_VERSION constant definition as it's no longer needed
 
 /**
  * Enqueue parent and child theme styles
@@ -11,8 +8,8 @@ if ( ! defined( 'BASEHOTEL_CHILD_VERSION' ) ) {
  */
 function base_hotel_child_enqueue_styles() {
     $script_asset = include_once get_stylesheet_directory() . '/build/app.asset.php';
-	wp_enqueue_script( 'custom-js', get_stylesheet_directory_uri() . '/build/app.js', $script_asset['dependencies'], $script_asset['version'], true );
-	wp_enqueue_style( 'custom-css', get_stylesheet_directory_uri() . '/build/main.css', array(), BASEHOTEL_CHILD_VERSION );
+    wp_enqueue_script('custom-js', get_stylesheet_directory_uri() . '/build/app.js', $script_asset['dependencies'], $script_asset['version'], true);
+    wp_enqueue_style('custom-css', get_stylesheet_directory_uri() . '/build/main.css', array(), $script_asset['version']);
 }
 
 // Hook the enqueue function into WordPress
