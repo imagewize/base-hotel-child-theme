@@ -21,6 +21,14 @@ function get_manifest_entry($entry) {
  * This function ensures proper loading order of stylesheets
  */
 function base_hotel_child_enqueue_styles() {
+    // Enqueue parent theme stylesheet first
+    wp_enqueue_style(
+        'base-hotel-style',
+        get_template_directory_uri() . '/style.css',
+        array(),
+        wp_get_theme('base-hotel')->get('Version')
+    );
+    
     $js_entry = get_manifest_entry('app.js');
     $css_entry = get_manifest_entry('app.css');
     
@@ -38,7 +46,7 @@ function base_hotel_child_enqueue_styles() {
         wp_enqueue_style(
             'custom-css',
             get_stylesheet_directory_uri() . '/public/' . $css_entry,
-            array(),
+            array('base-hotel-style'), // Make sure our custom CSS loads after parent theme
             null
         );
     }
