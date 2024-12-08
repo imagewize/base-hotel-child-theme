@@ -72,7 +72,7 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
 - Asset manifest generation for reliable file referencing
 
 ### Technical Details
-- Version: 1.2.3
+- Version: 1.3
 - Parent Theme: Base Hotel
 - Author: Imagewize (https://imagewize.com)
 

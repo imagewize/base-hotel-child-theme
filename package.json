@@ -1,6 +1,6 @@
 {
   "name": "base-hotel-child-theme",
-  "version": "1.0.0",
+  "version": "1.3",
   "private": true,
   "packageManager": "yarn@4.5.0",
   "scripts": {
