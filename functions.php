@@ -1,24 +1,18 @@
 <?php 
 
+if ( ! defined( 'BASEHOTEL_CHILD_VERSION' ) ) {
+	// Replace the version number of the theme on each release.
+	define( 'BASEHOTEL_CHILD_VERSION', '1.0.0' );
+}
+
 /**
  * Enqueue parent and child theme styles
  * This function ensures proper loading order of stylesheets
  */
 function base_hotel_child_enqueue_styles() {
-    $parent_style = 'base-hotel-style';
-    $theme_version = wp_get_theme()->get('Version'); // Get version from style.css
-    
-    // Enqueue parent theme's stylesheet first
-    wp_enqueue_style($parent_style, 
-        get_template_directory_uri() . '/style.css'  // Path to parent theme's style.css
-    );
-    
-    // Enqueue child theme's stylesheet with parent dependency and file modified time
-    wp_enqueue_style('base-hotel-child-style',
-        get_stylesheet_directory_uri() . '/style.css',  // Path to child theme's style.css
-        array($parent_style),  // Make child style dependent on parent style
-        $theme_version  // Use theme version from style.css for cache busting
-    );
+    $script_asset = include_once get_stylesheet_directory() . '/build/app.asset.php';
+	wp_enqueue_script( 'custom-js', get_stylesheet_directory_uri() . '/build/app.js', $script_asset['dependencies'], $script_asset['version'], true );
+	wp_enqueue_style( 'custom-css', get_stylesheet_directory_uri() . '/build/main.css', array(), BASEHOTEL_CHILD_VERSION );
 }
 
 // Hook the enqueue function into WordPress
@@ -103,25 +97,6 @@ function base_hotel_child_dequeue_google_fonts() {
     wp_dequeue_style('base_hotel_fonts');
 }
 add_action('wp_enqueue_scripts', 'base_hotel_child_dequeue_google_fonts', 20);
-
-function base_hotel_child_enqueue_local_fonts() {
-    $theme_version = wp_get_theme()->get('Version'); // Get version from style.css
-    
-    // Enqueue local Open Sans font with theme version
-    wp_enqueue_style('base_hotel_child_open_sans', 
-        get_stylesheet_directory_uri() . '/css/open-sans.css', 
-        array(), 
-        $theme_version
-    );
-
-    // Enqueue local Poly font with theme version
-    wp_enqueue_style('base_hotel_child_poly', 
-        get_stylesheet_directory_uri() . '/css/poly.css', 
-        array(), 
-        $theme_version
-    );
-}
-add_action('wp_enqueue_scripts', 'base_hotel_child_enqueue_local_fonts');
 
 /**
  * Enhances WordPress's native lazy loading functionality
