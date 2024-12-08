@@ -55,8 +55,24 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
 - Removed duplicate Font Awesome CSS from WP Post and Blog Designer plugin
 - Consolidated Font Awesome loading to prevent redundant requests
 
+### Build System
+- Webpack-based build system for asset optimization
+- Asset versioning with content hashes for cache busting
+- SCSS compilation with modern CSS features
+- JavaScript bundling and minification
+- Font file optimization and management
+- Manifest-based asset versioning
+
+### Asset Optimization
+- Concatenation of CSS and JavaScript files
+- Minification of CSS and JavaScript in production
+- Source maps in development mode
+- Automated font file handling with WOFF2 optimization
+- Cache busting through content hash versioning
+- Asset manifest generation for reliable file referencing
+
 ### Technical Details
-- Version: 1.2.3
+- Version: 1.3
 - Parent Theme: Base Hotel
 - Author: Imagewize (https://imagewize.com)
 
