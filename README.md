@@ -53,6 +53,7 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
 
 ### Resource Optimization
 - Removed duplicate Font Awesome CSS from WP Post and Blog Designer plugin
+- Dequeued WordPress blocks CSS library to prevent unnecessary CSS loading
 - Consolidated Font Awesome loading to prevent redundant requests
 
 ### Build System
