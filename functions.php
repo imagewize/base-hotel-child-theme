@@ -221,20 +221,6 @@ function add_lazy_loading_acf_image($value, $post_id, $field) {
 // Initialize lazy loading
 add_action('init', 'enhance_lazy_loading', 5);
 
-// Optional: Add modern lazy load fallback
-function add_lazy_load_fallback() {
-    if (!is_admin()) {
-        wp_enqueue_script(
-            'lazy-load-fallback',
-            get_stylesheet_directory_uri() . '/js/lazy-load-fallback.js',
-            array(),
-            wp_get_theme()->get('Version'),
-            true
-        );
-    }
-}
-add_action('wp_enqueue_scripts', 'add_lazy_load_fallback');
-
 /**
  * Filter slider HTML to add responsive background images
  */
