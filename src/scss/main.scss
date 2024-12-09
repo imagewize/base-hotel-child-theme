@@ -74,6 +74,41 @@
     padding: 10px;
 }
 
+/* Additional Cookie Notice Content Optimizations
+ * 1. Use contain: paint to reduce paint area
+ * 2. Add will-change for smoother transitions
+ * 3. Force hardware acceleration
+ */
+.cky-notice {
+    contain: paint;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.cky-notice-des {
+    contain: content;
+    transform: translateZ(0);
+    max-width: 100%;
+    p {
+        margin: 8px 0;
+        text-rendering: optimizeSpeed;
+    }
+}
+
+.cky-title {
+    contain: content;
+    transform: translateZ(0);
+    margin: 0 0 8px;
+    text-rendering: optimizeSpeed;
+}
+
+/* Optimize button rendering */
+.cky-btn {
+    contain: content;
+    transform: translateZ(0);
+    transition: background-color 0.2s ease-out;
+}
+
 @media (max-width: 767px) {
     .cky-consent-container {
         position: fixed;
