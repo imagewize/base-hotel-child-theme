@@ -55,6 +55,14 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
 - Removed duplicate Font Awesome CSS from WP Post and Blog Designer plugin
 - Dequeued WordPress blocks CSS library to prevent unnecessary CSS loading
 - Consolidated Font Awesome loading to prevent redundant requests
+- Optimized Tiqets widget loading with lazy loading and script deduplication
+
+### Tiqets Widget Optimization
+- Implements lazy loading for Tiqets booking widgets
+- Only loads Tiqets script when widgets come into viewport
+- Prevents duplicate loader script inclusions
+- Uses Intersection Observer for efficient viewport detection
+- Adds preconnect for cdn.tiqets.com domain
 
 ### Build System
 - Webpack-based build system for asset optimization
@@ -73,7 +81,7 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
 - Asset manifest generation for reliable file referencing
 
 ### Technical Details
-- Version: 1.3
+- Version: 1.4.0
 - Parent Theme: Base Hotel
 - Author: Imagewize (https://imagewize.com)
 

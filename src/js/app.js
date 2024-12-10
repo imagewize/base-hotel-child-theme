@@ -9,10 +9,14 @@
  * Internal Dependencies
  */
 import { initLazyLoadFallback } from './lazy-load-fallback';
+import { initTiqetsOptimization } from './tiqets-optimization';
 
 // Import styles
 import '../scss/main.scss';
 
 // Initialize lazy load fallback
 initLazyLoadFallback();
+
+// Initialize Tiqets optimization
+document.addEventListener('DOMContentLoaded', initTiqetsOptimization);
 
