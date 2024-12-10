@@ -188,8 +188,9 @@ function add_lazy_loading($content) {
     }
 
     $patterns = array(
-        // Images
-        '/<img(?![^>]*loading=["\'])(.*?)src=/is' => '<img$1loading="lazy" src=',
+        // Images should be taken care of by WordPress normally and we do not want to lazy
+        // load in viewport imagees like the logo. This is why we are not using the following:
+        // '/<img(?![^>]*loading=["\'])(.*?)src=/is' => '<img$1loading="lazy" src=',
         // iframes
         '/<iframe(?![^>]*loading=["\'])(.*?)src=/is' => '<iframe$1loading="lazy" src=',
         // Background images (optional)
@@ -235,48 +236,19 @@ add_action('init', 'enhance_lazy_loading', 5);
 function modify_slider_background_urls($content) {
     if (is_admin()) return $content;
     
-    // Debug code - commented out
-    /*
-    // Force debug to screen for testing
-    echo "<!-- DEBUG START -->\n";
-    echo "<!-- Content length: " . strlen($content) . " -->\n";
-    echo "<!-- Is Mobile: " . (wp_is_mobile() ? 'yes' : 'no') . " -->\n";
-    
-    // Direct file logging
-    $log = fopen(WP_CONTENT_DIR . '/slider-debug.log', 'a');
-    fwrite($log, "\n=== " . date('Y-m-d H:i:s') . " ===\n");
-    fwrite($log, "Content length: " . strlen($content) . "\n");
-    fwrite($log, "Is Mobile: " . (wp_is_mobile() ? 'yes' : 'no') . "\n");
-    */
-    
     $pattern = '/(<div[^>]*class="item"[^>]*style="[^"]*background-image:\s*url\([\'"]?)(.*?)([\'"]?\).*?")(.*?>)/i';
     
     // use ($log) removed from method below  before curly brace opening
     $modified = preg_replace_callback($pattern, function($matches) {
         $original_url = $matches[2];
-        /* Debug code - commented out
-        fwrite($log, "Found URL: " . $original_url . "\n");
-        echo "<!-- Found URL: " . $original_url . " -->\n";
-        */
         
         $base_url = preg_replace('/\.(jpg|webp)$/', '', $original_url);
         $mobile_url = wp_is_mobile() ? 
             $base_url . '-750x400.jpg' : 
             $original_url;
-            
-        /* Debug code - commented out
-        fwrite($log, "Modified to: " . $mobile_url . "\n");
-        echo "<!-- Modified to: " . $mobile_url . " -->\n";
-        */
         
         return $matches[1] . $mobile_url . $matches[3] . $matches[4];
     }, $content);
-    
-    /* Debug code - commented out
-    fwrite($log, "=== END ===\n");
-    fclose($log);
-    echo "<!-- DEBUG END -->\n";
-    */
     
     return $modified;
 }
@@ -322,3 +294,78 @@ function dequeue_block_library_css() {
     }
 }
 add_action('wp_enqueue_scripts', 'dequeue_block_library_css', 100);
+
+/**
+ * Optimize Tiqets widget loading by:
+ * 1. Adding resource hints (preconnect/dns-prefetch) for faster initial connection
+ * 2. Using Intersection Observer to detect when widgets come into viewport
+ * 3. Loading the Tiqets loader script only once when first widget becomes visible
+ * 4. Removing duplicate loader scripts from content
+ * 
+ * Benefits:
+ * - Reduces initial page load by deferring widget loading
+ * - Prevents multiple loader.js downloads
+ * - Improves performance by loading resources just-in-time
+ * - Maintains widget functionality while optimizing load time
+ * 
+ * Usage: Simply add Tiqets widgets to content without script tags:
+ * <div data-tiqets-widget="availability" data-product-id="1030327" ...></div>
+ */
+function optimize_tiqets_loading() {
+    echo <<<HTML
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Remove individual loader scripts
+        document.querySelectorAll('script[src*="widgets.tiqets.com/loader.js"]').forEach(script => {
+            script.remove();
+        });
+
+        let isLoading = false;
+
+        // Initialize Intersection Observer
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isLoading) {
+                    isLoading = true;
+                    
+                    // Create preconnect link for cdn.tiqets.com
+                    const preconnect = document.createElement('link');
+                    preconnect.rel = 'preconnect';
+                    preconnect.href = 'https://cdn.tiqets.com';
+                    preconnect.crossOrigin = 'anonymous';
+                    document.head.appendChild(preconnect);
+
+                    // Load main Tiqets script
+                    const script = document.createElement('script');
+                    script.src = 'https://widgets.tiqets.com/loader.js';
+                    script.defer = true;
+                    document.body.appendChild(script);
+                    
+                    // Stop observing all widgets once we start loading
+                    document.querySelectorAll('[data-tiqets-widget]').forEach(widget => {
+                        observer.unobserve(widget);
+                    });
+                }
+            });
+        }, {
+            rootMargin: '50px 0px', // Start loading slightly before widgets come into view
+            threshold: 0.1
+        });
+
+        // Observe all Tiqets widgets
+        document.querySelectorAll('[data-tiqets-widget]').forEach(widget => {
+            observer.observe(widget);
+        });
+    });
+    </script>
+HTML;
+}
+
+// Hook into wp_head with lower priority to ensure it loads after other critical resources
+add_action('wp_head', 'optimize_tiqets_loading', 99);
+
+// Filter the content to remove individual loader scripts
+function remove_tiqets_inline_scripts($content) {
+    return preg_replace('/<script[^>]*widgets\.tiqets\.com\/loader\.js[^>]*><\/script>/', '', $content);
+}
+add_filter('the_content', 'remove_tiqets_inline_scripts', 10);
