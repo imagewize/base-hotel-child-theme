@@ -1,9 +1,19 @@
 <?php if( have_rows('sections') ): ?>
 <?php while( have_rows('sections') ): the_row(); ?>
 
+<?php if( get_row_layout() == 'hero' ): ?>
+    <?php 
+    $hero_image = get_sub_field('hero_image');
+    if ($hero_image): ?>
+        <div class="hero-section">
+            <?php echo wp_get_attachment_image($hero_image['ID'], 'base_hotel_img_slideshow_home', false, [
+                'class' => 'hero-image',
+                'sizes' => '(max-width: 767px) 750px, 1800px'
+            ]); ?>
+        </div>
+    <?php endif; ?>
 
-
-<?php if( get_row_layout() == 'slideshow' ): ?>
+<?php elseif( get_row_layout() == 'slideshow' ): ?>
 
 <!-- Slideshow | START -->
 
