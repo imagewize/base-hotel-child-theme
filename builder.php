@@ -4,12 +4,28 @@
 <?php if( get_row_layout() == 'hero' ): ?>
     <?php 
     $hero_image = get_sub_field('hero_image');
+    $hero_title = get_sub_field('hero_title');
+    $hero_tagline = get_sub_field('hero_tagline');
+    
     if ($hero_image): ?>
         <div class="hero-section">
-            <?php echo wp_get_attachment_image($hero_image['ID'], 'base_hotel_img_slideshow_home', false, [
+            <?php echo wp_get_attachment_image($hero_image['ID'], 'full', false, [
                 'class' => 'hero-image',
-                'sizes' => '(max-width: 767px) 750px, 1800px'
+                'loading' => 'eager', // Load hero image immediately
+                'sizes' => '100vw',
+                'srcset' => wp_get_attachment_image_srcset($hero_image['ID']),
             ]); ?>
+            
+            <?php if ($hero_title || $hero_tagline): ?>
+            <div class="hero-content">
+                <?php if ($hero_title): ?>
+                    <h1 class="hero-title"><?php echo esc_html($hero_title); ?></h1>
+                <?php endif; ?>
+                <?php if ($hero_tagline): ?>
+                    <p class="hero-tagline"><?php echo esc_html($hero_tagline); ?></p>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
 

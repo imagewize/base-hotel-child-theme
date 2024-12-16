@@ -311,11 +311,29 @@ function add_hero_field_group() {
             'title' => 'Hero Options',
             'fields' => array(
                 array(
-                    'key' => 'field_layout_hero',
-                    'label' => 'Hero',
-                    'name' => 'hero',
-                    'type' => 'layout',
-                    'display' => 'block'
+                    'key' => 'field_hero_image',
+                    'label' => 'Hero Image',
+                    'name' => 'hero_image',
+                    'type' => 'image',
+                    'return_format' => 'array',
+                    'preview_size' => 'medium',
+                    'library' => 'all',
+                    'required' => 1,
+                    'instructions' => 'Select an image (recommended: 1920x1080px)'
+                ),
+                array(
+                    'key' => 'field_hero_title',
+                    'label' => 'Hero Title',
+                    'name' => 'hero_title',
+                    'type' => 'text',
+                    'instructions' => 'Main title to display on hero image'
+                ),
+                array(
+                    'key' => 'field_hero_tagline',
+                    'label' => 'Hero Tagline',
+                    'name' => 'hero_tagline',
+                    'type' => 'text',
+                    'instructions' => 'Optional subtitle/tagline'
                 )
             ),
             'location' => array(
@@ -326,7 +344,8 @@ function add_hero_field_group() {
                         'value' => 'page'
                     )
                 )
-            )
+            ),
+            'style' => 'seamless'
         ));
     endif;
 }
