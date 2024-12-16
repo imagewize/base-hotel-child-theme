@@ -199,7 +199,7 @@ function add_lazy_loading($content) {
     );
 
     foreach ($patterns as $pattern => $replacement) {
-        $content = preg_replace($pattern, $replacement);
+        $content = preg_replace($pattern, $replacement, $content);
     }
 
     return $content;
