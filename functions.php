@@ -199,7 +199,7 @@ function add_lazy_loading($content) {
     );
 
     foreach ($patterns as $pattern => $replacement) {
-        $content = preg_replace($pattern, $replacement, $content);
+        $content = preg_replace($pattern, $replacement);
     }
 
     return $content;
@@ -300,3 +300,34 @@ function remove_tiqets_inline_scripts($content) {
     return preg_replace('/<script[^>]*widgets\.tiqets\.com\/loader\.js[^>]*><\/script>/', '', $content);
 }
 add_filter('the_content', 'remove_tiqets_inline_scripts', 10);
+
+/**
+ * Add ACF field group for Hero Options
+ */
+function add_hero_field_group() {
+    if(function_exists('acf_add_local_field_group')):
+        acf_add_local_field_group(array(
+            'key' => 'group_hero',
+            'title' => 'Hero Options',
+            'fields' => array(
+                array(
+                    'key' => 'field_layout_hero',
+                    'label' => 'Hero',
+                    'name' => 'hero',
+                    'type' => 'layout',
+                    'display' => 'block'
+                )
+            ),
+            'location' => array(
+                array(
+                    array(
+                        'param' => 'post_type',
+                        'operator' => '==',
+                        'value' => 'page'
+                    )
+                )
+            )
+        ));
+    endif;
+}
+add_action('acf/init', 'add_hero_field_group');
