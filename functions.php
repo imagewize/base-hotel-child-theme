@@ -69,6 +69,21 @@ add_action('wp_enqueue_scripts', 'base_hotel_child_enqueue_styles');
 add_image_size('base_hotel_img_slideshow_small', 385, 250, true);   // Mobile-first size
 add_image_size('base_hotel_img_slideshow_medium', 610, 400, true);  // Tablet/medium screen size
 
+/**
+ * Configure WordPress image sizes for responsive images
+ * 
+ * Image size hierarchy from small to large:
+ * - base_hotel_img_slideshow_small:  385x250  (mobile devices)
+ * - base_hotel_img_slideshow_medium: 610x400  (tablets/smaller screens)
+ * - base_hotel_img_slideshow:        770x500  (desktop - from parent theme)
+ * - base_hotel_img_slideshow_large:  1200x600 (large screens - from parent theme)
+ * 
+ * All sizes use crop=true to maintain aspect ratios for srcset compatibility
+ */
+
+// Enable responsive image sizes for improved performance
+add_image_size('base_hotel_img_slideshow_small', 385, 250, true);   // Mobile-first size
+add_image_size('base_hotel_img_slideshow_medium', 610, 400, true);  // Tablet/medium screen size
 
 /**
  * Add DNS prefetch for CookieYes domains before any scripts load
@@ -223,7 +238,7 @@ function add_lazy_loading($content) {
     );
 
     foreach ($patterns as $pattern => $replacement) {
-        $content = preg_replace($pattern, $replacement, $content);
+        $content = preg_replace($pattern, $replacement);
     }
 
     return $content;

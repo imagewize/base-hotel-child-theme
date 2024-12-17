@@ -17,7 +17,8 @@
                             $image_sizes = array(
                                 'base_hotel_img_slideshow_small'  => '385w',  // Mobile
                                 'base_hotel_img_slideshow_medium' => '610w',  // Tablet
-                                'base_hotel_img_slideshow'        => '770w'   // Desktop
+                                'base_hotel_img_slideshow'        => '770w',  // Desktop
+                                'base_hotel_img_slideshow_large'  => '1200w'  // Large screens
                             );
                             
                             // Generate srcset attribute
@@ -32,7 +33,7 @@
                             // Output responsive image
                             echo wp_get_attachment_image($thumb_id, 'base_hotel_img_slideshow', false, array(
                                 'srcset' => implode(', ', $srcset),
-                                'sizes'  => '(max-width: 385px) 385px, (max-width: 610px) 610px, 770px'
+                                'sizes'  => '(max-width: 385px) 385px, (max-width: 610px) 610px, (max-width: 770px) 770px, 1200px'
                             ));
                             ?>
                         </div>
