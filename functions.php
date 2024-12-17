@@ -72,18 +72,17 @@ add_image_size('base_hotel_img_slideshow_medium', 610, 400, true);  // Tablet/me
 /**
  * Configure WordPress image sizes for responsive images
  * 
- * Image size hierarchy from small to large:
+ * Image size hierarchy from small to large (all maintaining ~1.54:1 ratio):
  * - base_hotel_img_slideshow_small:  385x250  (mobile devices)
  * - base_hotel_img_slideshow_medium: 610x400  (tablets/smaller screens)
  * - base_hotel_img_slideshow:        770x500  (desktop - from parent theme)
- * - base_hotel_img_slideshow_large:  1200x600 (large screens - from parent theme)
- * 
- * All sizes use crop=true to maintain aspect ratios for srcset compatibility
+ * - base_hotel_img_slideshow_large:  1200x780 (large screens - modified from parent)
  */
 
 // Enable responsive image sizes for improved performance
 add_image_size('base_hotel_img_slideshow_small', 385, 250, true);   // Mobile-first size
 add_image_size('base_hotel_img_slideshow_medium', 610, 400, true);  // Tablet/medium screen size
+add_image_size('base_hotel_img_slideshow_large', 1200, 780, true);  // Large screens, maintaining aspect ratio
 
 /**
  * Add DNS prefetch for CookieYes domains before any scripts load
