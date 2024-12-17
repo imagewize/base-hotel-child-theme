@@ -136,6 +136,16 @@ function base_hotel_child_dequeue_google_fonts() {
 add_action('wp_enqueue_scripts', 'base_hotel_child_dequeue_google_fonts', 20);
 
 /**
+ * Dequeue backgrounds.css from parent theme
+ */
+function dequeue_parent_backgrounds() {
+    // Note: The handle is base_hotel_backgrounds (with underscore)
+    wp_dequeue_style('base_hotel_backgrounds');
+    wp_deregister_style('base_hotel_backgrounds');
+}
+add_action('wp_enqueue_scripts', 'dequeue_parent_backgrounds', 999);
+
+/**
  * Enhances WordPress's native lazy loading functionality
  * 
  * WordPress core only handles lazy loading for post content images,
