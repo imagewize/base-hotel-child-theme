@@ -55,6 +55,20 @@ function base_hotel_child_enqueue_styles() {
 // Hook the enqueue function into WordPress
 add_action('wp_enqueue_scripts', 'base_hotel_child_enqueue_styles');
 
+// Configure WordPress image sizes for responsive images
+// 
+// Parent theme sizes (commented for reference):
+// - base_hotel_img_slideshow:       770x500  (main content area)
+// - base_hotel_img_slideshow_large: 1200x600 (full width)
+// 
+// Child theme additional sizes for responsive images:
+// - base_hotel_img_slideshow_small:  385x250 (mobile devices)
+// - base_hotel_img_slideshow_medium: 610x400 (tablets/smaller screens)
+
+// Enable responsive image sizes for improved performance
+add_image_size('base_hotel_img_slideshow_small', 385, 250, true);   // Mobile-first size
+add_image_size('base_hotel_img_slideshow_medium', 610, 400, true);  // Tablet/medium screen size
+
 
 /**
  * Add DNS prefetch for CookieYes domains before any scripts load
