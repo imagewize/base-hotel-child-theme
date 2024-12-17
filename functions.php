@@ -70,9 +70,40 @@ add_action('wp_enqueue_scripts', 'base_hotel_child_enqueue_styles');
  */
 
 // Enable responsive image sizes for improved performance
-add_image_size('base_hotel_img_slideshow_small', 385, 250, true);   // Mobile-first size
-add_image_size('base_hotel_img_slideshow_medium', 610, 400, true);  // Tablet/medium screen size
-add_image_size('base_hotel_img_slideshow_large', 1200, 780, true);  // Large screens, maintaining aspect ratio
+/**
+ * Register custom image sizes for responsive images
+ * Called during theme setup to ensure sizes are registered
+ */
+function base_hotel_child_register_image_sizes() {
+    // Define image sizes array for easier management
+    $image_sizes = array(
+        'base_hotel_img_slideshow_small'  => array(385, 250, true),
+        'base_hotel_img_slideshow_medium' => array(610, 400, true),
+        'base_hotel_img_slideshow_large'  => array(1200, 780, true)
+    );
+
+    // Register each size
+    foreach ($image_sizes as $size_name => $dimensions) {
+        add_image_size($size_name, $dimensions[0], $dimensions[1], $dimensions[2]);
+    }
+}
+
+/**
+ * Add custom image sizes to WordPress admin
+ */
+function base_hotel_child_custom_image_sizes($sizes) {
+    return array_merge($sizes, array(
+        'base_hotel_img_slideshow_small'  => __('Slideshow Small (385x250)', 'base-hotel-child'),
+        'base_hotel_img_slideshow_medium' => __('Slideshow Medium (610x400)', 'base-hotel-child'),
+        'base_hotel_img_slideshow_large'  => __('Slideshow Large (1200x780)', 'base-hotel-child')
+    ));
+}
+
+// Register image sizes during theme setup
+add_action('after_setup_theme', 'base_hotel_child_register_image_sizes');
+
+// Add sizes to WordPress admin
+add_filter('image_size_names_choose', 'base_hotel_child_custom_image_sizes');
 
 /**
  * Add DNS prefetch for CookieYes domains before any scripts load
