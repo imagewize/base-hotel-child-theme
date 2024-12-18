@@ -199,7 +199,7 @@ function add_lazy_loading($content) {
     );
 
     foreach ($patterns as $pattern => $replacement) {
-        $content = preg_replace($pattern, $replacement, $content);
+        $content = preg_replace($pattern, $replacement);
     }
 
     return $content;
@@ -302,7 +302,21 @@ function remove_tiqets_inline_scripts($content) {
 add_filter('the_content', 'remove_tiqets_inline_scripts', 10);
 
 /**
- * Add ACF field group for Hero Options
+ * Registers an Advanced Custom Fields (ACF) field group for Hero sections
+ * 
+ * Creates a set of custom fields that allows users to customize hero sections on pages:
+ * - Hero Image: Full-width background image (1920x1080px recommended)
+ * - Hero Title: Main heading text
+ * - Hero Tagline: Optional subtitle text
+ * - CTA Button: Optional call-to-action with customizable text and URL
+ * 
+ * The field group appears on all pages and uses a seamless interface style for better integration
+ * with the WordPress admin. All fields are organized in a single group for easier management
+ * and better user experience.
+ * 
+ * @since 1.0.0
+ * @uses acf_add_local_field_group() ACF function to register field groups programmatically
+ * @return void
  */
 function add_hero_field_group() {
     if(function_exists('acf_add_local_field_group')):
