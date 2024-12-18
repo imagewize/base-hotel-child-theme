@@ -334,7 +334,33 @@ function add_hero_field_group() {
                     'name' => 'hero_tagline',
                     'type' => 'text',
                     'instructions' => 'Optional subtitle/tagline'
-                )
+                ),
+                array(
+                    'key' => 'field_hero_cta_title',
+                    'label' => 'CTA Button Text',
+                    'name' => 'hero_cta_title',
+                    'type' => 'text',
+                    'instructions' => 'Enter the text for the call-to-action button',
+                    'required' => 0,
+                    'wrapper' => array(
+                        'width' => '50',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                ),
+                array(
+                    'key' => 'field_hero_cta_url',
+                    'label' => 'CTA Button URL',
+                    'name' => 'hero_cta_url',
+                    'type' => 'url',
+                    'instructions' => 'Enter the URL for the call-to-action button',
+                    'required' => 0,
+                    'wrapper' => array(
+                        'width' => '50',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                ),
             ),
             'location' => array(
                 array(

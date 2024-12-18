@@ -6,6 +6,8 @@
     $hero_image = get_sub_field('hero_image');
     $hero_title = get_sub_field('hero_title');
     $hero_tagline = get_sub_field('hero_tagline');
+    $cta_title = get_sub_field('hero_cta_title');
+    $cta_url = get_sub_field('hero_cta_url');
     
     if ($hero_image): ?>
         <div class="hero-section">
@@ -16,13 +18,18 @@
                 'srcset' => wp_get_attachment_image_srcset($hero_image['ID']),
             ]); ?>
             
-            <?php if ($hero_title || $hero_tagline): ?>
+            <?php if ($hero_title || $hero_tagline || ($cta_title && $cta_url)): ?>
             <div class="hero-content">
                 <?php if ($hero_title): ?>
                     <h1 class="hero-title"><?php echo esc_html($hero_title); ?></h1>
                 <?php endif; ?>
                 <?php if ($hero_tagline): ?>
                     <p class="hero-tagline"><?php echo esc_html($hero_tagline); ?></p>
+                <?php endif; ?>
+                <?php if ($cta_title && $cta_url): ?>
+                    <a href="<?php echo esc_url($cta_url); ?>" class="hero-cta">
+                        <?php echo esc_html($cta_title); ?>
+                    </a>
                 <?php endif; ?>
             </div>
             <?php endif; ?>
