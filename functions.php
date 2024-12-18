@@ -209,7 +209,7 @@ function add_lazy_loading($content) {
     );
 
     foreach ($patterns as $pattern => $replacement) {
-        $content = preg_replace($pattern, $replacement, $content);
+        $content = preg_replace($pattern, $replacement);
     }
 
     return $content;
@@ -310,3 +310,93 @@ function remove_tiqets_inline_scripts($content) {
     return preg_replace('/<script[^>]*widgets\.tiqets\.com\/loader\.js[^>]*><\/script>/', '', $content);
 }
 add_filter('the_content', 'remove_tiqets_inline_scripts', 10);
+
+/**
+ * Registers an Advanced Custom Fields (ACF) field group for Hero sections
+ * 
+ * Creates a set of custom fields that allows users to customize hero sections on pages:
+ * - Hero Image: Full-width background image (1920x1080px recommended)
+ * - Hero Title: Main heading text
+ * - Hero Tagline: Optional subtitle text
+ * - CTA Button: Optional call-to-action with customizable text and URL
+ * 
+ * The field group appears on all pages and uses a seamless interface style for better integration
+ * with the WordPress admin. All fields are organized in a single group for easier management
+ * and better user experience.
+ * 
+ * @since 1.0.0
+ * @uses acf_add_local_field_group() ACF function to register field groups programmatically
+ * @return void
+ */
+function add_hero_field_group() {
+    if(function_exists('acf_add_local_field_group')):
+        acf_add_local_field_group(array(
+            'key' => 'group_hero',
+            'title' => 'Hero Options',
+            'fields' => array(
+                array(
+                    'key' => 'field_hero_image',
+                    'label' => 'Hero Image',
+                    'name' => 'hero_image',
+                    'type' => 'image',
+                    'return_format' => 'array',
+                    'preview_size' => 'medium',
+                    'library' => 'all',
+                    'required' => 1,
+                    'instructions' => 'Select an image (recommended: 1920x1080px)'
+                ),
+                array(
+                    'key' => 'field_hero_title',
+                    'label' => 'Hero Title',
+                    'name' => 'hero_title',
+                    'type' => 'text',
+                    'instructions' => 'Main title to display on hero image'
+                ),
+                array(
+                    'key' => 'field_hero_tagline',
+                    'label' => 'Hero Tagline',
+                    'name' => 'hero_tagline',
+                    'type' => 'text',
+                    'instructions' => 'Optional subtitle/tagline'
+                ),
+                array(
+                    'key' => 'field_hero_cta_title',
+                    'label' => 'CTA Button Text',
+                    'name' => 'hero_cta_title',
+                    'type' => 'text',
+                    'instructions' => 'Enter the text for the call-to-action button',
+                    'required' => 0,
+                    'wrapper' => array(
+                        'width' => '50',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                ),
+                array(
+                    'key' => 'field_hero_cta_url',
+                    'label' => 'CTA Button URL',
+                    'name' => 'hero_cta_url',
+                    'type' => 'url',
+                    'instructions' => 'Enter the URL for the call-to-action button',
+                    'required' => 0,
+                    'wrapper' => array(
+                        'width' => '50',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                ),
+            ),
+            'location' => array(
+                array(
+                    array(
+                        'param' => 'post_type',
+                        'operator' => '==',
+                        'value' => 'page'
+                    )
+                )
+            ),
+            'style' => 'seamless'
+        ));
+    endif;
+}
+add_action('acf/init', 'add_hero_field_group');
