@@ -9,6 +9,12 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
 - Allows for custom style overrides through child theme's style.css
 - Responsive slider title text sizing for mobile devices
 - Custom styling for featured item titles using local Poly font
+- Optimized cookie notice display and animations
+- GPU acceleration for smooth transitions
+- Mobile-responsive cookie consent container
+- Performance-focused CSS containment strategies
+- Reduced paint areas and layout updates
+- Hardware-accelerated transformations
 
 ### Performance Optimizations
 - Implements DNS prefetch and preconnect for external domains:
@@ -63,6 +69,14 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
 - Prevents duplicate loader script inclusions
 - Uses Intersection Observer for efficient viewport detection
 - Adds preconnect for cdn.tiqets.com domain
+
+### CookieYes Optimizations
+- Performance-optimized consent container
+- GPU-accelerated animations
+- Reduced repaints and reflows
+- Contained layout updates
+- Responsive design optimizations
+- Mobile-specific positioning and sizing
 
 ### Build System
 - Webpack-based build system for asset optimization
