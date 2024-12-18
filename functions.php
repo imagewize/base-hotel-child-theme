@@ -55,6 +55,55 @@ function base_hotel_child_enqueue_styles() {
 // Hook the enqueue function into WordPress
 add_action('wp_enqueue_scripts', 'base_hotel_child_enqueue_styles');
 
+// Configure WordPress image sizes for responsive images
+/**
+ * Configure WordPress image sizes for responsive images
+ * 
+ * Parent theme sizes (commented for reference):
+ * - base_hotel_img_slideshow:       770x500  (main content area)
+ * 
+ * Child theme additional sizes for responsive images:
+ * All sizes maintain ~1.54:1 aspect ratio
+ * - base_hotel_img_slideshow_small:  385x250  (mobile devices)
+ * - base_hotel_img_slideshow_medium: 610x400  (tablets/smaller screens)
+ * - base_hotel_img_slideshow_large:  1200x780 (large screens - modified from parent)
+ */
+
+// Enable responsive image sizes for improved performance
+/**
+ * Register custom image sizes for responsive images
+ * Called during theme setup to ensure sizes are registered
+ */
+function base_hotel_child_register_image_sizes() {
+    // Define image sizes array for easier management
+    $image_sizes = array(
+        'base_hotel_img_slideshow_small'  => array(385, 250, true),
+        'base_hotel_img_slideshow_medium' => array(610, 400, true),
+        'base_hotel_img_slideshow_large'  => array(1200, 780, true)
+    );
+
+    // Register each size
+    foreach ($image_sizes as $size_name => $dimensions) {
+        add_image_size($size_name, $dimensions[0], $dimensions[1], $dimensions[2]);
+    }
+}
+
+/**
+ * Add custom image sizes to WordPress admin
+ */
+function base_hotel_child_custom_image_sizes($sizes) {
+    return array_merge($sizes, array(
+        'base_hotel_img_slideshow_small'  => __('Slideshow Small (385x250)', 'base-hotel-child'),
+        'base_hotel_img_slideshow_medium' => __('Slideshow Medium (610x400)', 'base-hotel-child'),
+        'base_hotel_img_slideshow_large'  => __('Slideshow Large (1200x780)', 'base-hotel-child')
+    ));
+}
+
+// Register image sizes during theme setup
+add_action('after_setup_theme', 'base_hotel_child_register_image_sizes');
+
+// Add sizes to WordPress admin
+add_filter('image_size_names_choose', 'base_hotel_child_custom_image_sizes');
 
 /**
  * Add DNS prefetch for CookieYes domains before any scripts load
@@ -209,7 +258,7 @@ function add_lazy_loading($content) {
     );
 
     foreach ($patterns as $pattern => $replacement) {
-        $content = preg_replace($pattern, $replacement, $content);
+        $content = preg_replace($pattern, $replacement);
     }
 
     return $content;
