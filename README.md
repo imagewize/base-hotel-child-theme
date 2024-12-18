@@ -102,3 +102,38 @@ To use this child theme in a WordPress Multisite environment:
 1. Ensure the parent theme (`Base Hotel`) is installed and network-enabled.
 2. Install and network-enable the child theme (`Base Hotel Child Theme`).
 3. Activate the child theme on the desired site via `Network Admin` > `Sites` > `Edit` > `Themes`.
+
+## Server Configuration
+
+### WP-CLI Installation
+- Added WP-CLI for efficient WordPress management:
+  ```bash
+  curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+  chmod +x wp-cli.phar
+  sudo mv wp-cli.phar /usr/local/bin/wp
+  ```
+- Configured proper permissions and aliases:
+  ```bash
+  sudo mkdir -p /var/www/.wp-cli
+  sudo chown -R www-data:www-data /var/www/.wp-cli
+  echo 'alias wp="sudo -u www-data wp"' >> ~/.bashrc
+  ```
+
+### Apache Optimizations
+- Enabled Apache modules for improved caching:
+  - mod_expires for browser caching control
+  - mod_headers for custom HTTP headers
+  ```bash
+  a2enmod expires
+  a2enmod headers
+  systemctl restart apache2
+  ```
+
+### Security Measures
+- Suggested proper file permissions to be implemented by server admin:
+  ```bash
+  sudo find /var/www/site.com/public_html -type d -exec chmod 775 {} \;
+  sudo find /var/www/ -type f -exec chmod 644 {} \;
+  ```
+  - Directories: 775 (proper access while maintaining security)
+  - Files: 644 (readable but protected from unauthorized writes)
