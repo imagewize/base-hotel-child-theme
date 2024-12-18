@@ -2,46 +2,42 @@
 
 A child theme for the Base Hotel WordPress theme with performance optimizations.
 
-## Features
+## Core Features
 
 ### Style Enhancements
-- Properly inherits all styles from the parent Base Hotel theme
-- Allows for custom style overrides through child theme's style.css
-- Responsive slider title text sizing for mobile devices
 - Custom styling for featured item titles using local Poly font
-- Optimized cookie notice display and animations
-- GPU acceleration for smooth transitions
-- Mobile-responsive cookie consent container
+- Responsive design optimizations:
+  - Mobile-friendly slider title text sizing
+  - Adaptive cookie consent container layout
+- GPU-accelerated animations and transitions
 - Performance-focused CSS containment strategies
-- Reduced paint areas and layout updates
 - Hardware-accelerated transformations
+- Reduced paint areas and layout updates
 
-### Performance Optimizations
-- Implements DNS prefetch and preconnect for external domains:
+### Performance Features
+- DNS prefetch and preconnect optimizations
+- Local font serving with WOFF2 format
+- Enhanced lazy loading capabilities
+- Responsive image handling
+- Resource optimization and deduplication
+- Build system with asset optimization
+
+## Technical Implementation
+
+### Font Optimization
+- Local WOFF2 font files replace Google Fonts:
+  - Open Sans (weights: 300, 400, 500, 600, 700)
+  - Poly (weight: 400)
+- Font-display: swap for optimal loading
+
+### Network Optimizations
+- DNS prefetch and preconnect for external services:
   - cdn-cookieyes.com
   - directory.cookieyes.com
   - log.cookieyes.com
+  - cdn.tiqets.com
 
-## Performance Optimizations
-
-### Local Fonts
-- Replaced Google Fonts with local WOFF2 font files
-  - Open Sans (weights: 300, 400, 500, 600, 700)
-  - Poly (weight: 400)
-- Font files are served with font-display: swap for optimal loading
-
-### Removed Features
-- Disabled WordPress emoji support
-  - Removed emoji CSS
-  - Removed emoji JavaScript
-  - Removed emoji DNS prefetch
-  - Disabled emoji in TinyMCE editor
-
-### DNS Prefetch
-- Added DNS prefetch for external services
-  - CookieYes domains
-
-### Lazy Loading
+### Lazy Loading System
 - Enhanced native WordPress lazy loading functionality
 - Extends lazy loading support to:
   - ACF image fields
