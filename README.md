@@ -96,7 +96,7 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
 - Asset manifest generation for reliable file referencing
 
 ### Technical Details
-- Version: 1.4.0
+- Version: 1.5
 - Parent Theme: Base Hotel
 - Author: Imagewize (https://imagewize.com)
 
