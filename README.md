@@ -38,15 +38,20 @@ A child theme for the Base Hotel WordPress theme with performance optimizations.
   - cdn.tiqets.com
 
 ### Lazy Loading System
-- Enhanced native WordPress lazy loading functionality
-- Extends lazy loading support to:
+- Builds upon WordPress core lazy loading functionality
+- Respects native image lazy loading in WordPress 6.3+
+- Focuses on elements not handled by core:
+  - iframe elements
+  - Elements with background-image CSS
   - ACF image fields
   - Template parts
   - Widget areas
-  - Background images
-  - iframes
   - Dynamically loaded content
-- Includes polyfill for older browsers
+- Skips lazy loading for above-the-fold content
+- Compatible with WordPress core image performance enhancements
+- See: 
+  - WordPress 6.3 Image Performance Enhancements
+  - Native Lazy Loading in WordPress 5.5+
 
 ### Responsive Images
 - Optimized slider background images for mobile devices
