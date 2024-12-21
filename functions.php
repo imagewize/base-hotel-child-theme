@@ -310,3 +310,12 @@ function remove_tiqets_inline_scripts($content) {
     return preg_replace('/<script[^>]*widgets\.tiqets\.com\/loader\.js[^>]*><\/script>/', '', $content);
 }
 add_filter('the_content', 'remove_tiqets_inline_scripts', 10);
+
+/**
+ * Add custom image size for mobile slider images
+ * 
+ * Image size: 750x400px was missing from the theme
+*/
+add_action('after_setup_theme', function() {
+    add_image_size('base_hotel_img_mobile', 750, 400, true);
+});
