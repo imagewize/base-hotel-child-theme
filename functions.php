@@ -182,15 +182,20 @@ function enhance_lazy_loading() {
 }
 
 /**
- * Adds loading="lazy" attribute to HTML elements that support it
+ * Adds loading="lazy" attribute to supported HTML elements in content
  * 
- * Processes content and adds lazy loading to:
- * - img tags without existing loading attribute
- * - iframe elements
- * - elements with background-image CSS
+ * WordPress core handles lazy loading for post content images by default.
+ * This function extends lazy loading support to:
+ * - iframe elements for embedded content
+ * - Elements with background-image CSS properties
  * 
- * @param string $content The content to be filtered
- * @return string Modified content with lazy loading attributes
+ * Note: Image lazy loading for <img> tags is not used as WordPress 6.3+ handles this natively
+ * through the core functionality, especially for above-the-fold content like logos.
+ * @see https://make.wordpress.org/core/2023/07/13/image-performance-enhancements-in-wordpress-6-3/
+ * @see https://make.wordpress.org/core/2020/07/14/lazy-loading-images-in-5-5/
+ * 
+ * @param string $content The HTML content to be processed
+ * @return string Modified content with added lazy loading attributes
  */
 function add_lazy_loading($content) {
     if (is_admin() || is_feed() || is_preview()) {
@@ -198,12 +203,7 @@ function add_lazy_loading($content) {
     }
 
     $patterns = array(
-        // Images should be taken care of by WordPress normally and we do not want to lazy
-        // load in viewport imagees like the logo. This is why we are not using the following:
-        // '/<img(?![^>]*loading=["\'])(.*?)src=/is' => '<img$1loading="lazy" src=',
-        // iframes
         '/<iframe(?![^>]*loading=["\'])(.*?)src=/is' => '<iframe$1loading="lazy" src=',
-        // Background images (optional)
         '/style="([^"]*?)background-image:\s*url\([\'"]?(.*?)[\'"]?\)([^"]*?)"/is' 
             => 'style="$1background-image: url($2)$3" loading="lazy"'
     );
